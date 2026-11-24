@@ -65,6 +65,18 @@ app.post('/v3/assets/search', (req, res) => {
   });
 });
 
+// Return sample Armis JSON on GET / and GET /v3/assets
+app.get(['/', '/v3/assets'], (req, res) => {
+  res.status(200).json({
+    data: {
+      count: sampleAssets.length,
+      results: sampleAssets,
+      total: sampleAssets.length
+    },
+    success: true
+  });
+});
+
 // 3. PUSH Endpoint: Trigger this URL to POST sample data straight into ServiceNow
 app.post('/push-to-servicenow', async (req, res) => {
   const { snowInstanceUrl, username, password } = req.body;
