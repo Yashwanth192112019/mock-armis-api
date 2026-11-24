@@ -37,8 +37,16 @@ const sampleAssets = [
 ];
 
 // Health check route (open in browser to verify server is awake)
-app.get('/', (req, res) => {
-  res.send('Mock Armis API is running!');
+// Return sample Armis JSON on GET / and GET /v3/assets
+app.get(['/', '/v3/assets'], (req, res) => {
+  res.status(200).json({
+    data: {
+      count: sampleAssets.length,
+      results: sampleAssets,
+      total: sampleAssets.length
+    },
+    success: true
+  });
 });
 
 // 1. OAuth Token Endpoint (Armis v3 style)
@@ -55,18 +63,6 @@ app.post('/v3/oauth/token', (req, res) => {
 
 // 2. PULL Endpoint: ServiceNow calls POST /v3/assets/search to fetch data
 app.post('/v3/assets/search', (req, res) => {
-  res.status(200).json({
-    data: {
-      count: sampleAssets.length,
-      results: sampleAssets,
-      total: sampleAssets.length
-    },
-    success: true
-  });
-});
-
-// Return sample Armis JSON on GET / and GET /v3/assets
-app.get(['/', '/v3/assets'], (req, res) => {
   res.status(200).json({
     data: {
       count: sampleAssets.length,
